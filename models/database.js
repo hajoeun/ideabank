@@ -1,13 +1,16 @@
+require('../public/javascripts/partial');
 var pg = require('pg');
 var connectionString = 'joeun://localhost:5432/joeundb';
 var client = new pg.Client(connectionString);
 client.connect();
 
 var query = client.query(
-  "DROP TABLE IF EXISTS users;" +
-  "CREATE TABLE users(id serial unique, name varchar(255) not null, age int not null);" +
-  "INSERT INTO users(name, age) values('하조은', 27);" +
-  "INSERT INTO users(name, age) values('오한나', 23);" +
-  "INSERT INTO users(name, age) values('박기쁨', 25);");
+  "DROP TABLE IF EXISTS icontents;\
+  DROP TABLE IF EXISTS iposts;\
+  CREATE TABLE icontents(c_id serial unique, product_or_service varchar(50) not null, mission text, vision text, market text, main_idea text, member text, extra_info text);\
+  CREATE TABLE iposts(p_id serial unique, title text not null, c_id int not null, user_id varchar(100) not null, create_date date not null);\
+  ");
 
-query.on('end', function(){ client.end(); });
+// client.query('select content from json_table').on('row', function(row){console.log(row.content.type)});
+
+query.on('end', function() { client.end(); });
